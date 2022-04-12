@@ -8,7 +8,7 @@ Ambiente: sgi.grupoaguas.cl
 Panel de análisis: REPINCTAR - Reporte de Inconsistencias de Tareas de "Ejecución de actividad" en módulo Hallazgos
         
 Modificaciones: 
-DD-MM-AAAA. Autor. Descripción.    
+12-04-2022. Andrés Del Río. Verificación de ceros al inicio de rut de responsable de cada etapa de hallazgo.    
 **/
         
 TAREAS.ID_HALLAZGO_TAREA,
@@ -117,6 +117,9 @@ HALLAZGOS.*
                 FORMGH.cdusuverif CD_RESP_VERI_EFIC,
                 FORMGH.idusuverif ID_RESP_VERI_EFIC,
                 FORMGH.nmusuverif RESP_VERI_EFIC,
+
+                CASE WHEN FORMGH.idusuaprohal LIKE '0%' OR FORMGH.idusuanalisis LIKE '0%' OR FORMGH.idusuaprob LIKE '0%' OR FORMGH.idusuverif LIKE '0%' THEN 'SI' ELSE 'NO' END RUT_COMIENZA_CERO,
+
                 1 CANTIDAD                            
             FROM
                 WFPROCESS HALL                                              
