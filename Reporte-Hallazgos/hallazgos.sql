@@ -4,7 +4,9 @@ SELECT
             Ambiente: https://sgi.grupoaguas.cl/softexpert 
             Versión SE Suite: 2.1.2.100 
             Panel de análisis:  REPHAL - Reporte de Hallazgos SGI 2.0
-            Modificaciones: DD-MM-AAAA. Autor. Descripción 
+            
+            Modificaciones: 
+            28-04-2022. Andrés Del Río. Inclusión de nombre de sistemas de gestión. 
 **/ 
         TAREAS.TPIDPROCESS TAREA_IDHALLAZGO,
         TAREAS.TPNMPROCESS TAREA_NMHALLAZGO,
@@ -28,6 +30,16 @@ SELECT
         END TAREA_CANTIDAD,
         1 AS CANTIDAD,
 		HALLAZGOS.IDREVISIONSTATUS || ' - ' || HALLAZGOS.NMREVISIONSTATUS ETAPA_HALLAZGO,
+		
+		CASE WHEN HALLAZGOS.SG01 = 1 THEN 'Calidad de Servicio (ISO 9001)' ELSE '' END SISTEMA_GESTION_ISO9001,
+		CASE WHEN HALLAZGOS.SG02 = 1 THEN 'Eficiencia Energética (ISO 50001)' ELSE '' END SISTEMA_GESTION_50001,
+		CASE WHEN HALLAZGOS.SG03 = 1 THEN 'Seguridad y Salud Ocupacional (ISO 45001)' ELSE '' END SISTEMA_GESTION_45001,
+		CASE WHEN HALLAZGOS.SG04 = 1 THEN 'Continuidad de Negocio (ISO 22301)' ELSE '' END SISTEMA_GESTION_22301,
+		CASE WHEN HALLAZGOS.SG05 = 1 THEN 'Medio Ambiente (ISO 14001)' ELSE '' END SISTEMA_GESTION_14001,
+		CASE WHEN HALLAZGOS.SG06 = 1 THEN 'Igualdad de Género y Conciliación (NCh 3262)' ELSE '' END SISTEMA_GESTION_3262,
+		CASE WHEN HALLAZGOS.SG07 = 1 THEN 'Anti-soborno (ISO 37001)' ELSE '' END SISTEMA_GESTION_37001,
+		CASE WHEN HALLAZGOS.SG08 = 1 THEN 'Seguridad de la Información ISO 27001' ELSE '' END SISTEMA_GESTION_27001,
+		
         HALLAZGOS.*      
     FROM
         (SELECT
@@ -57,7 +69,7 @@ SELECT
             TABLE0__ACCSSOOJOACL_1,
             TABLE0__ACCSSOCAUINM_2,
             TABLE0__ACCSSOPARAFE12_7,
-            TABLE0__SG07_7,
+            TABLE0__SG07_7 SG07,
             TABLE0__ANTTRABACCTRA_3,
             TABLE0__ANTTRABACCEMP_3,
             TABLE0__APROBANAPLAN_3,
@@ -70,7 +82,7 @@ SELECT
             TABLE0__ACCSSOPARAFE03_7,
             TABLE0__ACCSSOPARAFE04_7,
             TABLE0__ACCSSOPARAFE01_7,
-            TABLE0__SG01_7,
+            TABLE0__SG01_7 SG01,
             TABLE0__CAPTRABACC_1,
             TABLE0__ACCSSOPARAFE13_7,
             TABLE0__CARNMDETECTA_1,
@@ -122,7 +134,7 @@ SELECT
             TABLE0__ACCAMBIMP04_7,
             TABLE0__ACCAMBIMP02_7,
             TABLE0__ACCAMBACC06_7,
-            TABLE0__SG04_7,
+            TABLE0__SG04_7 SG04,
             TABLE0__ACCSSONATLES06_7,
             TABLE0__CRITICIDAD_1,
             TABLE0__ACCSSONATLESCUA_1,
@@ -157,7 +169,7 @@ SELECT
             TABLE0__ACCAMBIMP01_7,
             TABLE0__ACCAMBIMP05_7,
             TABLE0__EFICAZ_3,
-            TABLE0__SG02_7,
+            TABLE0__SG02_7 SG02,
             TABLE0__EMP_1,
             TABLE0__EMPAA_7,
             TABLE0__EMPAC_7,
@@ -269,7 +281,7 @@ SELECT
             TABLE0__IDDETECTA_1,
             TABLE0__IDUSUVERIF_1,
             TABLE0__IDENTIFICADOR_1,
-            TABLE0__SG06_7,
+            TABLE0__SG06_7 SG06,
             TABLE0__IMPOMJ_3,
             TABLE0__ACCAMBTP09_7,
             TABLE0__ACCSSOACC02_7,
@@ -299,7 +311,7 @@ SELECT
             TABLE0__ACCAMBPQ05_7,
             TABLE0__ACCSSOPARAFE05_7,
             TABLE0__ACCSSOPARAFE06_7,
-            TABLE0__SG05_7,
+            TABLE0__SG05_7 SG05,
             TABLE0__ACCSSOMEDTRA_3,
             TABLE0__TM17_7,
             TABLE0__TM10_7,
@@ -400,8 +412,8 @@ SELECT
             TABLE0__ACCSSORUNTES01_1,
             TABLE0__ACCSSORUNTES02_1,
             TABLE0__RUTTRABACC_1,
-            TABLE0__SG08_7,
-            TABLE0__SG03_7,
+            TABLE0__SG08_7 SG08,
+            TABLE0__SG03_7 SG03,
             TABLE0__ACCAMBACC03_7,
             TABLE0__ACCSSOACC03_7,
             TABLE0__SEXOTRABACC_3,
