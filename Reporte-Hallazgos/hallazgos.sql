@@ -7,6 +7,7 @@ SELECT
             
             Modificaciones: 
             28-04-2022. Andrés Del Río. Inclusión de nombre de sistemas de gestión. 
+            25-05-2022. Andrés Del Río. Inclusión de sistema Gestión de Activos.
 **/ 
         TAREAS.TPIDPROCESS TAREA_IDHALLAZGO,
         TAREAS.TPNMPROCESS TAREA_NMHALLAZGO,
@@ -39,6 +40,7 @@ SELECT
 		CASE WHEN HALLAZGOS.SG06 = 1 THEN 'Igualdad de Género y Conciliación (NCh 3262)' ELSE '' END SISTEMA_GESTION_3262,
 		CASE WHEN HALLAZGOS.SG07 = 1 THEN 'Anti-soborno (ISO 37001)' ELSE '' END SISTEMA_GESTION_37001,
 		CASE WHEN HALLAZGOS.SG08 = 1 THEN 'Seguridad de la Información ISO 27001' ELSE '' END SISTEMA_GESTION_27001,
+		CASE WHEN HALLAZGOS.SG09 = 1 THEN 'Gestión de Activos (ISO 55001)' ELSE '' END SISTEMA_GESTION_55001,
 		
         HALLAZGOS.*      
     FROM
@@ -413,6 +415,7 @@ SELECT
             TABLE0__ACCSSORUNTES02_1,
             TABLE0__RUTTRABACC_1,
             TABLE0__SG08_7 SG08,
+            TABLE0__SG09_7 SG09,
             TABLE0__SG03_7 SG03,
             TABLE0__ACCAMBACC03_7,
             TABLE0__ACCSSOACC03_7,
@@ -849,6 +852,7 @@ SELECT
                 TABLE0__ACCSSORUNTES02_1,
                 TABLE0__RUTTRABACC_1,
                 TABLE0__SG08_7,
+                TABLE0__SG09_7,
                 TABLE0__SG03_7,
                 TABLE0__ACCAMBACC03_7,
                 TABLE0__ACCSSOACC03_7,
@@ -1106,6 +1110,7 @@ SELECT
                     TABLE0_OUTER.TABLE0__ACCAMBIMP05_7,
                     TABLE0_OUTER.TABLE0__EFICAZ_3,
                     TABLE0_OUTER.TABLE0__SG02_7,
+                    TABLE0_OUTER.TABLE0__SG09_7,
                     TABLE0_OUTER.TABLE0__EMP_1,
                     TABLE0_OUTER.TABLE0__EMPAA_7,
                     TABLE0_OUTER.TABLE0__EMPAC_7,
@@ -1827,6 +1832,7 @@ SELECT
                                 TABLE0.ACCSSORUNTES02 AS TABLE0__ACCSSORUNTES02_1,
                                 TABLE0.RUTTRABACC AS TABLE0__RUTTRABACC_1,
                                 TABLE0.SG08 AS TABLE0__SG08_7,
+                                TABLE0.SG09 AS TABLE0__SG09_7,
                                 TABLE0.SG03 AS TABLE0__SG03_7,
                                 TABLE0.ACCAMBACC03 AS TABLE0__ACCAMBACC03_7,
                                 TABLE0.ACCSSOACC03 AS TABLE0__ACCSSOACC03_7,
