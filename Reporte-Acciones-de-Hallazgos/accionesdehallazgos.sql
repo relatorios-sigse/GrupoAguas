@@ -6,7 +6,7 @@ SELECT
             Panel de análisis:  REPACCHAL - Reporte de Acciones y Planes de Hallazgos SGI 2.0
             
             Modificaciones: 
-            DD-MM-AAAA. Autor. Descripción.
+            26-05-2022. Andrés Del Río. Inclusión de campos calculos "Acción", "Dias Planificación", "Dias Realizados" y "Plan de Acción"
 **/
         CASE 
             WHEN GNACT.FGSTATUS=1 
@@ -79,6 +79,7 @@ SELECT
         GNACT2.NMACTIVITY AS NMACTIONPLAN,
         GNACT.IDACTIVITY,
         GNACT.NMACTIVITY,
+
         GNGNTP.IDGENTYPE,
         GNGNTP.NMGENTYPE,
         ADUSR.IDUSER AS IDTASKRESP,
@@ -157,7 +158,13 @@ SELECT
             WHEN 3 THEN 'Cancelado' 
             WHEN 4 THEN 'Finalizado' 
             WHEN 5 THEN 'Bloqueado para edición' 
-        END AS IDSITUATION 
+        END AS IDSITUATION,
+
+        GNACT.IDACTIVITY || ' - ' || GNACT.NMACTIVITY AS ACCION,
+        (TO_DATE( GNACT.DTFINISHPLAN, 'YYYY-MM-DD') - TO_DATE( GNACT.DTSTARTPLAN, 'YYYY-MM-DD')) + 1 AS DIAS_PLANIFICACION,
+        (TO_DATE( GNACT.DTFINISH, 'YYYY-MM-DD') - TO_DATE( GNACT.DTSTART, 'YYYY-MM-DD')) + 1 AS DIAS_REALIZADOS,
+		GNACT2.IDACTIVITY || ' - ' || GNACT2.NMACTIVITY AS PLAN_ACCION
+
     FROM
         (SELECT
             CDGENACTIVITY,
