@@ -8,6 +8,8 @@ SELECT
             Modificaciones: 
             28-04-2022. Andrés Del Río. Inclusión de nombre de sistemas de gestión. 
             25-05-2022. Andrés Del Río. Inclusión de sistema Gestión de Activos.
+            26-05-2022. Andrés Del Río. Inclusión de fechas de ejecución de las etapas: Registro, Aprobación, Análisis y Planificación,
+            Aprobación del Análisis, Ejecución Planificación, Verificación de Eficacia.
 **/ 
         TAREAS.TPIDPROCESS TAREA_IDHALLAZGO,
         TAREAS.TPNMPROCESS TAREA_NMHALLAZGO,
@@ -41,6 +43,66 @@ SELECT
 		CASE WHEN HALLAZGOS.SG07 = 1 THEN 'Anti-soborno (ISO 37001)' ELSE '' END SISTEMA_GESTION_37001,
 		CASE WHEN HALLAZGOS.SG08 = 1 THEN 'Seguridad de la Información ISO 27001' ELSE '' END SISTEMA_GESTION_27001,
 		CASE WHEN HALLAZGOS.SG09 = 1 THEN 'Gestión de Activos (ISO 55001)' ELSE '' END SISTEMA_GESTION_55001,
+
+          (SELECT 
+            WFS.DTEXECUTION
+            FROM WFPROCESS WFP
+            INNER JOIN WFSTRUCT WFS ON WFS.IDPROCESS=WFP.IDOBJECT
+            INNER JOIN WFACTIVITY WFA ON WFS.IDOBJECT=WFA.IDOBJECT
+            WHERE WFS.NMSTRUCT = 'Registro de Hallazgo'
+            AND WFA.NMEXECUTEDACTION = 'Enviar'
+            AND WFS.FGSTATUS = 3
+            AND WFP.IDPROCESS = HALLAZGOS.IDPROCESS) AS FECHA_REGISTRO_HALLAZGO,    
+
+            (SELECT 
+            WFS.DTEXECUTION
+            FROM WFPROCESS WFP
+            INNER JOIN WFSTRUCT WFS ON WFS.IDPROCESS=WFP.IDOBJECT
+            INNER JOIN WFACTIVITY WFA ON WFS.IDOBJECT=WFA.IDOBJECT
+            WHERE WFS.NMSTRUCT = 'Aprobación de Hallazgo'
+            AND WFA.NMEXECUTEDACTION = 'Enviar'
+            AND WFS.FGSTATUS = 3
+            AND WFP.IDPROCESS = HALLAZGOS.IDPROCESS) AS FECHA_APROBACION_HALLAZGO,
+
+            (SELECT 
+            WFS.DTEXECUTION
+            FROM WFPROCESS WFP
+            INNER JOIN WFSTRUCT WFS ON WFS.IDPROCESS=WFP.IDOBJECT
+            INNER JOIN WFACTIVITY WFA ON WFS.IDOBJECT=WFA.IDOBJECT
+            WHERE WFS.NMSTRUCT = 'Análisis de Causa y Plan de Acción'
+            AND WFA.NMEXECUTEDACTION = 'Enviar'
+            AND WFS.FGSTATUS = 3
+            AND WFP.IDPROCESS = HALLAZGOS.IDPROCESS) AS FECHA_ANALISIS_Y_PLANACCION,
+
+            (SELECT 
+            WFS.DTEXECUTION
+            FROM WFPROCESS WFP
+            INNER JOIN WFSTRUCT WFS ON WFS.IDPROCESS=WFP.IDOBJECT
+            INNER JOIN WFACTIVITY WFA ON WFS.IDOBJECT=WFA.IDOBJECT
+            WHERE WFS.NMSTRUCT = 'Aprobación de Análisis de Causa y Plan de Acción'
+            AND WFA.NMEXECUTEDACTION = 'Enviar'
+            AND WFS.FGSTATUS = 3
+            AND WFP.IDPROCESS = HALLAZGOS.IDPROCESS) AS FECHA_APROBACION_ANALISIS,
+
+            (SELECT 
+            WFS.DTEXECUTION
+            FROM WFPROCESS WFP
+            INNER JOIN WFSTRUCT WFS ON WFS.IDPROCESS=WFP.IDOBJECT
+            INNER JOIN WFACTIVITY WFA ON WFS.IDOBJECT=WFA.IDOBJECT
+            WHERE WFS.NMSTRUCT = 'Ejecución de Plan de Acción'
+            AND WFA.NMEXECUTEDACTION = 'Enviar'
+            AND WFS.FGSTATUS = 3
+            AND WFP.IDPROCESS = HALLAZGOS.IDPROCESS) AS FECHA_EJECUCION_PLANACCION,
+
+            (SELECT 
+            WFS.DTEXECUTION
+            FROM WFPROCESS WFP
+            INNER JOIN WFSTRUCT WFS ON WFS.IDPROCESS=WFP.IDOBJECT
+            INNER JOIN WFACTIVITY WFA ON WFS.IDOBJECT=WFA.IDOBJECT
+            WHERE WFS.NMSTRUCT = 'Verificación de Eficacia'
+            AND WFA.NMEXECUTEDACTION = 'Enviar'
+            AND WFS.FGSTATUS = 3
+            AND WFP.IDPROCESS = HALLAZGOS.IDPROCESS) AS FECHA_VERIFICACION_EFICACIA,  
 		
         HALLAZGOS.*      
     FROM
