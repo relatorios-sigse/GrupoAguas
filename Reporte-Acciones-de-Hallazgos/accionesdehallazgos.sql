@@ -7,6 +7,8 @@ SELECT
             
             Modificaciones: 
             26-05-2022. Andrés Del Río. Inclusión de campos calculos "Acción", "Dias Planificación", "Dias Realizados" y "Plan de Acción"
+            01-06-2022. Andrés Del Río. Inclusión de campos Macroproceso, Proceso, Subproceso, Origen, Detalle de Origen y los 9 sistemas
+            de gestión certificados. Esto para poder filtrar las acciones de hallazgos de uns Gestión Transversal (GT) determinada, proceso, o cualquier otra de estas columnas.
 **/
         CASE 
             WHEN GNACT.FGSTATUS=1 
@@ -163,7 +165,24 @@ SELECT
         GNACT.IDACTIVITY || ' - ' || GNACT.NMACTIVITY AS ACCION,
         (TO_DATE( GNACT.DTFINISHPLAN, 'YYYY-MM-DD') - TO_DATE( GNACT.DTSTARTPLAN, 'YYYY-MM-DD')) + 1 AS DIAS_PLANIFICACION,
         (TO_DATE( GNACT.DTFINISH, 'YYYY-MM-DD') - TO_DATE( GNACT.DTSTART, 'YYYY-MM-DD')) + 1 AS DIAS_REALIZADOS,
-		GNACT2.IDACTIVITY || ' - ' || GNACT2.NMACTIVITY AS PLAN_ACCION
+		GNACT2.IDACTIVITY || ' - ' || GNACT2.NMACTIVITY AS PLAN_ACCION,
+
+
+        FORMGH.MACRO,
+        FORMGH.PROCESO,
+        FORMGH.SUBPROCESO,
+        FORMGH.ORIGEN,
+        FORMGH.DOR DETALLE_ORIGEN,
+
+        CASE WHEN FORMGH.SG01 = 1 THEN 'Calidad de Servicio (ISO 9001)' ELSE '' END SISTEMA_GESTION_ISO9001,
+        CASE WHEN FORMGH.SG02 = 1 THEN 'Eficiencia Energética (ISO 50001)' ELSE '' END SISTEMA_GESTION_50001,
+        CASE WHEN FORMGH.SG03 = 1 THEN 'Seguridad y Salud Ocupacional (ISO 45001)' ELSE '' END SISTEMA_GESTION_45001,
+        CASE WHEN FORMGH.SG04 = 1 THEN 'Continuidad de Negocio (ISO 22301)' ELSE '' END SISTEMA_GESTION_22301,
+        CASE WHEN FORMGH.SG05 = 1 THEN 'Medio Ambiente (ISO 14001)' ELSE '' END SISTEMA_GESTION_14001,
+        CASE WHEN FORMGH.SG06 = 1 THEN 'Igualdad de Género y Conciliación (NCh 3262)' ELSE '' END SISTEMA_GESTION_3262,
+        CASE WHEN FORMGH.SG07 = 1 THEN 'Anti-soborno (ISO 37001)' ELSE '' END SISTEMA_GESTION_37001,
+        CASE WHEN FORMGH.SG08 = 1 THEN 'Seguridad de la Información ISO 27001' ELSE '' END SISTEMA_GESTION_27001,
+        CASE WHEN FORMGH.SG09 = 1 THEN 'Gestión de Activos (ISO 55001)' ELSE '' END SISTEMA_GESTION_55001
 
     FROM
         (SELECT
@@ -262,6 +281,8 @@ SELECT
             ON (
                 WFGNAT.CDGENACTIVITY=P.CDGENACTIVITY
             ) 
+    LEFT JOIN GNASSOCFORMREG REG ON P.CDASSOCREG = REG.CDASSOC                                              
+    LEFT JOIN DYNGHA FORMGH ON REG.OIDENTITYREG=FORMGH.OID 
     INNER JOIN
         INOCCURRENCE INO 
             ON (
